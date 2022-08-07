@@ -18,5 +18,11 @@ func main() {
 
 func GreetHandler(writer http.ResponseWriter, req *http.Request) {
 	name := req.URL.Query().Get("name")
+
+	if name == "" {
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	fmt.Fprint(writer, "Hello, ", name)
 }
