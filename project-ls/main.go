@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"strings"
 )
 
@@ -15,7 +16,11 @@ func main() {
 func listFiles(dirname string) []string {
 	var dirs []string
 
-	files, _ := ioutil.ReadDir(dirname)
+	files, err := ioutil.ReadDir(dirname)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	for _, f := range files {
 		dirs = append(dirs, f.Name())
