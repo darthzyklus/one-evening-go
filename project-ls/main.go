@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"strings"
 )
 
 func main() {
 	// Your solution goes here. Good luck!
 	filesNames := listFiles("testdata")
-	fmt.Println(strings.Join(filesNames, " "))
+
+	for _, fileName := range filesNames {
+		fmt.Println(fileName)
+	}
 }
 
 func listFiles(dirname string) []string {
