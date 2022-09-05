@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 )
 
 type TweetsRepository interface {
@@ -103,6 +104,13 @@ func (s server) listTweets(writer http.ResponseWriter, req *http.Request) {
 }
 
 func (s server) tweets(writer http.ResponseWriter, req *http.Request) {
+	start := time.Now()
+
+	defer func() {
+		duration := time.Since(start)
+		fmt.Printf("%s %s %s\n", req.Method, req.URL, duration)
+	}()
+
 	if req.Method == http.MethodPost {
 		s.addTweet(writer, req)
 	} else if req.Method == http.MethodGet {
