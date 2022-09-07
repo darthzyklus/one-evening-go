@@ -13,7 +13,7 @@ type Tweet struct {
 	Location string `json:"location"`
 }
 
-type response struct {
+type Response struct {
 	ID int `json:"ID"`
 }
 
@@ -56,7 +56,7 @@ func (s server) AddTweet(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var resp = response{ID: id}
+	var resp = Response{ID: id}
 
 	respJSON, err := json.Marshal(resp)
 
