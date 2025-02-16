@@ -6,6 +6,11 @@ import (
 	"net/http"
 )
 
+var (
+	calls = []string{}
+	stats = map[string]int{}
+)
+
 func main() {
 	http.HandleFunc("/hello", GreetHandler)
 
@@ -19,6 +24,12 @@ func GreetHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
+	calls = append(calls, name)
+	stats[name]++
+
+	fmt.Printf("calls: %#v\n", calls)
+	fmt.Printf("stats: %#v\n\n", stats)
 
 	fmt.Fprint(w, "Hello, ", name)
 }
