@@ -8,19 +8,44 @@ import (
 	"net/http"
 )
 
-var tweetsCounter = 0
+func main() {
+	s := server{
+		tweetsRepository: &TweetsMemoryRepository{},
+	}
+
+	http.HandleFunc("/tweets", s.addTweet)
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+type Tweet struct {
+	Message  string `json:"message"`
+	Location string `json:"location"`
+}
 
 type TweetResponse struct {
 	ID int
 }
 
-type Tweet struct {
-	ID       int    `json:"ID"`
-	Message  string `json:"message"`
-	Location string `json:"location"`
+type TweetsRepository interface {
+	SaveTweet(tw Tweet) (int, error)
 }
 
-func addTweet(w http.ResponseWriter, r *http.Request) {
+type TweetsMemoryRepository struct {
+	tweets []Tweet
+}
+
+func (r *TweetsMemoryRepository) SaveTweet(tw Tweet) (int, error) {
+	r.tweets = append(r.tweets, tw)
+
+	return len(r.tweets), nil
+}
+
+type server struct {
+	tweetsRepository TweetsRepository
+}
+
+func (s server) addTweet(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 
 	if err != nil {
@@ -44,10 +69,15 @@ func addTweet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tweetsCounter++
-	tw.ID = tweetsCounter
+	tweetID, err := s.tweetsRepository.SaveTweet(tw)
 
-	resp := TweetResponse{ID: tw.ID}
+	if err != nil {
+		fmt.Println("Failed to save tweet:", nil)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	resp := TweetResponse{ID: tweetID}
 
 	respJSON, err := json.Marshal(resp)
 
@@ -58,10 +88,4 @@ func addTweet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(respJSON)
-}
-
-func main() {
-	http.HandleFunc("/tweets", addTweet)
-
-	log.Fatal(http.ListenAndServe(":8080", nil))
 }
