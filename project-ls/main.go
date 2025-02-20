@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -8,16 +9,19 @@ import (
 )
 
 func main() {
-	// Your solution goes here. Good luck!
 	directory := "testdata"
-	files := listFiles(directory)
+	all := flag.Bool("a", false, "Show hidden files")
+
+	flag.Parse()
+
+	files := listFiles(directory, *all)
 
 	for _, file := range files {
 		fmt.Println(file)
 	}
 }
 
-func listFiles(dirname string) []string {
+func listFiles(dirname string, all bool) []string {
 	var dirs []string
 	var pointPrefix = "."
 
@@ -28,7 +32,7 @@ func listFiles(dirname string) []string {
 	}
 
 	for _, f := range files {
-		if strings.HasPrefix(f.Name(), pointPrefix) {
+		if !all && strings.HasPrefix(f.Name(), pointPrefix) {
 			continue
 		}
 
