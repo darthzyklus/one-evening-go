@@ -1,1 +1,5 @@
-go 1.22.2
+go 1.23
+
+toolchain go1.23.6
+
+use ./14-packages/02-packages
