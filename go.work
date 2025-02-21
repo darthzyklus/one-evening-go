@@ -2,4 +2,7 @@ go 1.23
 
 toolchain go1.23.6
 
-use ./14-packages/02-packages
+use (
+	./14-packages/02-packages
+	./14-packages/03-exported-symbols
+)
