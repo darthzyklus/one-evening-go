@@ -31,13 +31,13 @@ func (s Server) Tweets(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	if r.Method == http.MethodPost {
-		s.addTweet(w, r)
+		s.AddTweet(w, r)
 	} else if r.Method == http.MethodGet {
-		s.listTweets(w, r)
+		s.ListTweets(w, r)
 	}
 }
 
-func (s Server) addTweet(w http.ResponseWriter, r *http.Request) {
+func (s Server) AddTweet(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 
 	if err != nil {
@@ -86,7 +86,7 @@ type tweetsList struct {
 	Tweets []Tweet `json:"tweets"`
 }
 
-func (s Server) listTweets(w http.ResponseWriter, r *http.Request) {
+func (s Server) ListTweets(w http.ResponseWriter, r *http.Request) {
 	tweets, err := s.TweetsRepository.Tweets()
 
 	if err != nil {

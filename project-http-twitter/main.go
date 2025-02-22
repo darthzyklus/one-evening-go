@@ -3,6 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 import "twitter/server"
@@ -12,7 +15,11 @@ func main() {
 		TweetsRepository: &server.TweetsMemoryRepository{},
 	}
 
-	http.HandleFunc("/tweets", s.Tweets)
+	router := chi.NewRouter()
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	router.Use(middleware.Logger)
+	router.Get("/tweets", s.ListTweets)
+	router.Post("/tweets", s.AddTweet)
+
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
