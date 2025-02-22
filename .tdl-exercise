@@ -1,3 +1,3 @@
-exercise_id = "3d3293ea-e974-4729-b0af-4ab3d63746ad"
-directory = "15-concurrency/01-goroutines"
+exercise_id = "4e6393a4-dce2-4296-a78e-86d22ad1094f"
+directory = "15-concurrency/02-channels"
 is_text_only = false
