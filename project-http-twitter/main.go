@@ -13,6 +13,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httprate"
 )
 
 func main() {
@@ -23,8 +24,11 @@ func main() {
 	router := chi.NewRouter()
 
 	router.Use(middleware.Logger)
+
+	rateLimit := httprate.LimitByIP(10, time.Minute)
+
 	router.Get("/tweets", s.ListTweets)
-	router.Post("/tweets", s.AddTweet)
+	router.With(rateLimit).Post("/tweets", s.AddTweet)
 
 	go spamTweets()
 
