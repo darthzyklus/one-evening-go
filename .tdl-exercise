@@ -1,3 +1,3 @@
-exercise_id = "9a67a257-1a13-4a5c-9545-8e07c9ebc85b"
-directory = "15-concurrency/07-channel-range"
+exercise_id = "e401843c-7105-4fcf-857a-251dc87378a8"
+directory = "15-concurrency/08-select"
 is_text_only = false
